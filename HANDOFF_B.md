@@ -280,7 +280,8 @@ cd legal-vn-hackaithon-2026
 
 pip install -r requirements.txt
 
-# Tải artifacts (embeddings, qdrant_data, ...) nếu chưa có
+# Tải artifacts (~1.2 GB) từ Hugging Face nếu chưa có
+# https://huggingface.co/datasets/nguyenvanhung05/legal-vn-hackaithon-artifact
 python3 scripts/download_artifacts.py
 
 ```

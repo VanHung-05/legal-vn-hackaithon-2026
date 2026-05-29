@@ -45,5 +45,5 @@ EVAL_SEED = 42
 EVAL_K_VALUES = [1, 3, 5, 10, 20, 50]
 
 # ── Hugging Face (artifacts không trên Git) ────────────────────────
-# Dataset repo: https://huggingface.co/datasets/nguyenvanhung05/legal-vn-hackathon-artifact
-HF_DATASET_REPO = "nguyenvanhung05/legal-vn-hackathon-artifact"
+# Dataset repo: https://huggingface.co/datasets/nguyenvanhung05/legal-vn-hackaithon-artifact
+HF_DATASET_REPO = "nguyenvanhung05/legal-vn-hackaithon-artifact"

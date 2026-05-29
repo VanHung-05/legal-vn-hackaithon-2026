@@ -28,9 +28,7 @@ Law_VN/
 
 ├── scripts/
 
-│   ├── upload_artifacts.py   # Upload lên Hugging Face (Người A)
-
-│   └── download_artifacts.py # Tải artifacts (Người B)
+│   └── download_artifacts.py # Tải artifacts từ Hugging Face
 
 ├── data/
 
@@ -112,7 +110,7 @@ Các file quá lớn cho Git được lưu tại:
 
 
 
-**https://huggingface.co/datasets/nguyenvanhung05/legal-vn-hackathon-artifact**
+**https://huggingface.co/datasets/nguyenvanhung05/legal-vn-hackaithon-artifact**
 
 
 
@@ -198,109 +196,7 @@ python3 scripts/download_artifacts.py --only-qdrant
 
 ```
 
-
-
-### Upload artifacts (Người A — chạy 1 lần)
-
-
-
-**Bước 1:** Tạo Dataset repo trên Hugging Face
-
-
-
-1. Đăng nhập https://huggingface.co
-
-2. **New Dataset** → tên `legal-vn-hackathon-artifacts`
-
-3. Chọn **Private** (khuyên dùng) hoặc Public
-
-4. Repo sẽ là: `VanHung-05/legal-vn-hackathon-artifacts`
-
-
-
-**Bước 2:** Tạo token Write
-
-
-
-1. https://huggingface.co/settings/tokens → **New token** → quyền **Write**
-
-
-
-**Bước 3:** Upload bằng script
-
-
-
-```bash
-
-pip install huggingface_hub
-
-
-
-python3 scripts/upload_artifacts.py --token hf_xxxxxxxx
-
-```
-
-
-
-Upload thủ công (nếu không dùng script):
-
-
-
-```bash
-
-huggingface-cli login
-
-
-
-# Upload từng file
-
-huggingface-cli upload VanHung-05/legal-vn-hackathon-artifacts \
-
-  data/legal_corpus.json data/legal_corpus.json --repo-type dataset
-
-
-
-huggingface-cli upload VanHung-05/legal-vn-hackathon-artifacts \
-
-  data/processed/articles.jsonl data/processed/articles.jsonl --repo-type dataset
-
-
-
-huggingface-cli upload VanHung-05/legal-vn-hackathon-artifacts \
-
-  data/processed/embeddings/corpus_embeddings.npy \
-
-  data/processed/embeddings/corpus_embeddings.npy --repo-type dataset
-
-
-
-huggingface-cli upload VanHung-05/legal-vn-hackathon-artifacts \
-
-  data/processed/embeddings/corpus_aids.npy \
-
-  data/processed/embeddings/corpus_aids.npy --repo-type dataset
-
-
-
-# Upload cả folder Qdrant
-
-huggingface-cli upload VanHung-05/legal-vn-hackathon-artifacts \
-
-  qdrant_data/ qdrant_data --repo-type dataset
-
-```
-
-
-
-> Tổng upload ~1.2 GB, mất khoảng 10–30 phút tùy mạng.
-
-
-
-**Bước 4:** Cập nhật repo id (nếu đổi tên)
-
-
-
-Sửa `HF_DATASET_REPO` trong `src/config.py`.
+Chi tiết tải artifacts: [HANDOFF_B.md §2.2](HANDOFF_B.md#22-hugging-face--tải-artifacts)
 
 
 
@@ -386,7 +282,7 @@ Chi tiết bàn giao: [HANDOFF_B.md](HANDOFF_B.md)
 
 | Corpus, BGE-M3, Qdrant, dense search | BM25, hybrid, Gemma rerank |
 
-| Upload HF artifacts, Docker (sau pipeline) | Pipeline + entrypoint, demo |
+| Docker (sau pipeline) | Pipeline + entrypoint, demo |
 
 
 
