@@ -1,0 +1,57 @@
+# Data files (too large for git)
+data/legal_corpus.json
+data/processed/articles.jsonl
+data/processed/embeddings/
+data/*.csv
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+venv/
+.venv/
+env/
+
+# Model weights & indexes
+models/
+qdrant_data/
+*.onnx
+*.bin
+*.safetensors
+*.gguf
+
+# Embeddings cache
+embeddings/
+*.npy
+*.npz
+*.pkl
+*.pickle
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+*.tar
+
+# Output
+output/
+
+# Logs
+*.log
+logs/
+
+# Environment
+.env
+.env.local
