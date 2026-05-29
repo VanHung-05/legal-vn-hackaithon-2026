@@ -5,3 +5,4 @@ FlagEmbedding
 qdrant-client
 numpy
 tqdm
+huggingface_hub
