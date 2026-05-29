@@ -271,24 +271,82 @@ EVAL_SEED = 42          # Dùng cùng seed khi eval để so sánh công bằng
 
 ## 8. Cách chạy & kiểm tra
 
+### 8.1. Setup lần đầu
+
 ```bash
-cd src
-pip install -r ../requirements.txt
+git clone https://github.com/VanHung-05/legal-vn-hackaithon-2026.git
 
-# Smoke test dense search (5 câu train)
-python3 dense_search.py
+cd legal-vn-hackaithon-2026
 
-# Eval baseline (219 holdout queries, ~2 phút CPU)
-python3 evaluate.py
+pip install -r requirements.txt
 
-# Inference public test → output/pred.csv
-python3 run_inference.py
+# Tải artifacts (embeddings, qdrant_data, ...) nếu chưa có
+python3 scripts/download_artifacts.py
 
-# Benchmark tốc độ
-python3 benchmark.py
 ```
 
-**Eval pipeline của B** — dùng lại hàm `evaluate()`:
+### 8.2. Từng file — lệnh & output
+
+Tất cả lệnh dưới đây chạy từ thư mục `src/`:
+
+```bash
+cd src
+```
+
+| Lệnh | Mục đích | Output |
+|------|----------|--------|
+| `python3 validate_embeddings.py` | Kiểm tra file embeddings hợp lệ | Console only |
+| `python3 build_qdrant.py` | Build Qdrant index từ embeddings | `qdrant_data/` |
+| `python3 dense_search.py` | Smoke test dense search (5 câu train) | Console only |
+| `python3 evaluate.py` | Eval baseline (219 holdout, ~2 phút CPU) | `output/eval_dense_results.json`, `output/eval_dense_failures.json` |
+| `python3 run_inference.py` | Inference public test → file nộp bài | `output/pred.csv`, `output/pred.json` |
+| `python3 benchmark.py` | Đo tốc độ (q/s) | `output/benchmark_dense.json` |
+
+**Scripts build corpus (đã chạy):**
+
+| Lệnh | Mục đích | Output |
+|------|----------|--------|
+| `python3 process_corpus.py` | Flatten corpus → articles | `data/processed/articles.jsonl` |
+| `python3 embed_corpus.py` | Embed toàn corpus bằng BGE-M3 (local, chậm trên CPU) | `data/processed/embeddings/*.npy` |
+
+**Tự embed lại trên Colab (GPU, nhanh hơn):**
+
+Nếu muốn tự embed lại thay vì tải artifacts, mở và chạy notebook **`embed_colab.ipynb`** trên [Google Colab](https://colab.research.google.com/) (chọn runtime GPU):
+
+1. Upload `data/processed/articles.jsonl` khi notebook yêu cầu
+2. Chạy hết các cell → download `corpus_embeddings.npy` và `corpus_aids.npy`
+3. Đặt 2 file vào `data/processed/embeddings/`
+4. Chạy tiếp `validate_embeddings.py` → `build_qdrant.py`
+
+### 8.3. Luồng chạy thường dùng
+
+**Máy mới / clone repo (đã tải artifacts):**
+
+```bash
+pip install -r requirements.txt
+python3 scripts/download_artifacts.py
+
+cd src
+python3 validate_embeddings.py
+python3 build_qdrant.py      # bỏ qua nếu đã tải qdrant_data/
+python3 evaluate.py          # eval baseline
+python3 run_inference.py     # inference → output/pred.csv
+```
+
+
+Các bước trong `pipeline.py`: `process` → `embed` → `validate` → `index` → `search` → `eval` → `benchmark` → `infer`
+
+**Rebuild index (nếu thiếu `qdrant_data/`):**
+
+```bash
+cd src
+python3 validate_embeddings.py
+python3 build_qdrant.py
+```
+
+### 8.4. Eval pipeline của B
+
+Dùng lại hàm `evaluate()`:
 
 ```python
 from evaluate import evaluate, split_holdout
